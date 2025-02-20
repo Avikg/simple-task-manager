@@ -1,49 +1,17 @@
-### Simple Task Manager
+# Simple Task Manager
 
-This is a simple task management application built using **React** with **localStorage** for persistence. It allows users to add, edit, delete, and filter tasks based on priority and completion status.
+A modern and fully-featured **Task Manager** built with **React**. This app allows users to add, edit, delete, and manage tasks with categories such as **upcoming, overdue, and completed tasks**. The UI is sleek, responsive, and optimized for usability.
 
-## Features
-- Add, edit, delete tasks
-- Search and filter tasks by priority and completion
-- Tasks are stored persistently using **localStorage**
-- Simple and clean UI
+## 🚀 Features
 
-## Setup Instructions
+- **Dashboard Overview**: Categorizes tasks into **Overdue, Upcoming, and Completed**.
+- **Task Management**: Users can **add, edit, delete, and mark tasks as completed**.
+- **Priority Levels**: Tasks can be set to **High, Medium, or Low priority**.
+- **Search & Filtering**: Quickly find tasks via **search and priority filters**.
+- **Persistent Storage**: Data is saved locally using **localStorage**.
 
-### **1. Clone the Repository**
-```sh
-git clone https://github.com/Avikg/simple-task-manager.git
-cd simple-task-manager
-```
+## 📂 Project Structure
 
-### **2. Install Dependencies**
-Ensure you have **Node.js** (v16+) installed, then run:
-```sh
-npm install
-```
-
-### **3. Start the Development Server**
-```sh
-npm start
-```
-This will launch the app on **http://localhost:3000/**.
-
-### **4. Build for Production (Optional)**
-To create an optimized build:
-```sh
-npm run build
-```
-The built files will be inside the `build/` folder.
-
-### **5. Running in Docker (Optional)**
-```sh
-docker build -t simple-task-manager .
-docker run -p 3000:3000 simple-task-manager
-```
-
----
-
-## Project Structure
 ```
 /simple-task-manager
 │── /public
@@ -51,6 +19,11 @@ docker run -p 3000:3000 simple-task-manager
 │── /src
 │   ├── /components
 │   │   ├── TaskManager.jsx
+│   │   ├── /ui
+│   │   │   ├── Button.jsx
+│   │   │   ├── Input.jsx
+│   │   │   ├── Select.jsx
+│   │   │   ├── Card.jsx
 │   ├── App.jsx
 │   ├── index.js
 │── .gitignore
@@ -58,139 +31,69 @@ docker run -p 3000:3000 simple-task-manager
 │── README.md
 ```
 
+## 🛠 Installation
+
+### 1️⃣ Clone the Repository
+
+```sh
+git clone https://github.com/Avikg/simple-task-manager.git
+cd simple-task-manager
+```
+
+### 2️⃣ Install Dependencies
+
+```sh
+npm install
+```
+
+### 3️⃣ Run the Application
+
+```sh
+npm start
+```
+
+The app will open at **[http://localhost:3000/](http://localhost:3000/)**.
+
+## ⚙️ Build for Production
+
+To create an optimized production build:
+
+```sh
+npm run build
+```
+
+## 🐳 Run in Docker (Optional)
+
+```sh
+docker build -t simple-task-manager .
+docker run -p 3000:3000 simple-task-manager
+```
+
+## 🔧 Technologies Used
+
+- **React.js** - Frontend framework
+- **localStorage** - Data persistence
+- **Docker (optional)** - For containerized deployment
+
+## 🤝 Contributing
+
+1. **Fork** the repository.
+2. **Create a new branch**: `git checkout -b feature-branch`.
+3. **Commit changes**: `git commit -m 'Add some feature'`.
+4. **Push to the branch**: `git push origin feature-branch`.
+5. **Create a Pull Request**.
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+## 📧 Contact
+
+For issues or feature requests, open a GitHub **issue** or contact \*\*avik.pramanick\@gmail.com\*\*.
+
+🔗 **GitHub Repository**: [https://github.com/Avikg/simple-task-manager](https://github.com/Avikg/simple-task-manager)
+
 ---
 
-## **Code Files**
+🚀 **Happy Task Managing!**
 
-### **1. `public/index.html`**
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Task Manager</title>
-</head>
-<body>
-    <div id="root"></div>
-    <script src="/src/index.js"></script>
-</body>
-</html>
-```
-
-### **2. `src/index.js`**
-```javascript
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./styles.css";
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
-```
-
-### **3. `src/App.jsx`**
-```javascript
-import React from "react";
-import TaskManager from "./components/TaskManager";
-
-function App() {
-  return (
-    <div className="App">
-      <TaskManager />
-    </div>
-  );
-}
-export default App;
-```
-
-### **4. `src/components/TaskManager.jsx`**
-```javascript
-import React, { useState, useEffect } from "react";
-import { Button, Input, Select, Card } from "@/components/ui";
-
-const priorities = ["High", "Medium", "Low"];
-
-const TaskManager = () => {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ title: "", description: "", dueDate: "", priority: "Medium", completed: false });
-  const [search, setSearch] = useState("");
-  const [filterPriority, setFilterPriority] = useState("");
-  const [filterCompletion, setFilterCompletion] = useState("");
-
-  useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(savedTasks);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  const addTask = () => {
-    if (!newTask.title || !newTask.dueDate) return;
-    setTasks([...tasks, { ...newTask, id: Date.now() }]);
-    setNewTask({ title: "", description: "", dueDate: "", priority: "Medium", completed: false });
-  };
-
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
-
-  const toggleCompletion = (id) => {
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)));
-  };
-
-  const filteredTasks = tasks.filter((task) => {
-    return (
-      task.title.toLowerCase().includes(search.toLowerCase()) &&
-      (filterPriority ? task.priority === filterPriority : true) &&
-      (filterCompletion ? task.completed.toString() === filterCompletion : true)
-    );
-  });
-
-  return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold">Task Manager</h1>
-      <div className="flex space-x-2 my-4">
-        <Input placeholder="Search Tasks" value={search} onChange={(e) => setSearch(e.target.value)} />
-        <Select value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)}>
-          <option value="">All Priorities</option>
-          {priorities.map((p) => (
-            <option key={p} value={p}>{p}</option>
-          ))}
-        </Select>
-        <Select value={filterCompletion} onChange={(e) => setFilterCompletion(e.target.value)}>
-          <option value="">All</option>
-          <option value="true">Completed</option>
-          <option value="false">Incomplete</option>
-        </Select>
-      </div>
-      <div className="space-y-2">
-        {filteredTasks.map((task) => (
-          <Card key={task.id} className="p-3 border rounded-md flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold">{task.title}</h3>
-              <p className="text-sm text-gray-600">{task.description}</p>
-              <p className="text-xs text-gray-500">Due: {task.dueDate} | Priority: {task.priority}</p>
-            </div>
-            <div>
-              <Button onClick={() => toggleCompletion(task.id)}>{task.completed ? "Undo" : "Complete"}</Button>
-              <Button onClick={() => deleteTask(task.id)} className="ml-2">Delete</Button>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-};
-export default TaskManager;
-```
-
-### **5. `.gitignore`**
-```
-/node_modules
-/build
-/dist
-/.env
-```
