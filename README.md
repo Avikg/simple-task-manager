@@ -85,7 +85,7 @@ docker run -p 3000:3000 simple-task-manager
 
 ## 🔧 Answers to technical questions
 
-- **Answers to technical questions.md** - Answers to the questions
+- **'Answers to technical questions.md'** - File containing answers to the questions
 
   
 ## 📜 License
